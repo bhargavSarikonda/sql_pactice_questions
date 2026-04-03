@@ -191,6 +191,32 @@ group by user_id,grp_key
 Having count(*)>= 3
 
 
+-- 19. Pivot Table
+-- 👉 Convert row data into columns (e.g., gender-wise salary per department).
+
+select dept,
+sum(case when gender='m' then salary else 0 end) as male_salary,
+sum(case when gender='f' then salary else 0 end) as female_salary
+from employees
+group by department
+
+
+-- 20. First Order per Customer
+-- 👉 Get first order date for each customer.
+
+with ranked_order as (
+    select*,
+    dense_rank() over (partition by customer_id order by order_date ASC) as rnk
+    from orders
+)
+
+select * from ranked_order 
+where rnk=1
+
+
+
+
+
 
 
 
